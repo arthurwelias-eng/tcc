@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkateMap - Painel de Prototipagem</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --text-primary: #f5f5f5;
+            --accent-neon: #00ff66;
+            --card-bg: #1e1e1e;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 { margin: 0 0 10px 0; font-size: 1.8rem; color: var(--accent-neon); }
+        p.subtitle { color: #aaa; font-size: 0.95rem; margin: 0; }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        button.tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border: 2px solid #333;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        button.tab-btn:hover, button.tab-btn.active {
+            background-color: var(--accent-neon);
+            color: #000;
+            border-color: var(--accent-neon);
+        }
+
+        .prototype-container {
+            display: none;
+            max-width: 420px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #333;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .prototype-container.active {
+            display: block;
+        }
+
+        /* Mockup Common Elements */
+        .mockup-header {
+            background: #252525;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .mockup-header h2 { font-size: 1.1rem; margin: 0; }
+        
+        .mockup-map {
+            height: 280px;
+            background: #2a2a2a;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 0.9rem;
+            background-image: radial-gradient(#3a3a3a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .pin {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-neon);
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #000;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .mockup-content {
+            padding: 15px;
+        }
+
+        .card-item {
+            background: #2b2b2b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent-neon);
+        }
+
+        .card-item h4 { margin: 0 0 5px 0; font-size: 0.95rem; }
+        .card-item p { margin: 0; font-size: 0.85rem; color: #ccc; }
+
+        .btn-action {
+            display: block;
+            width: 100%;
+            background: var(--accent-neon);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* Specific Mockup Styles */
+        /* Opção 1: Street Underground (Foco Visual Forte e Contraste Noturno) */
+        #proto-1 { --accent-neon: #ff3366; }
+        
+        /* Opção 2: Iniciante Amigável (Foco em Clareza e Acessibilidade Extrema) */
+        #proto-2 { --accent-neon: #00e5ff; }
+
+        /* Opção 3: Minimalista utilitário (Foco em Velocidade de Carregamento/Rua) */
+        #proto-3 { --accent-neon: #ffcc00; }
+
+        .expert-notes {
+            max-width: 600px;
+            margin: 30px auto 0 auto;
+            background: #181818;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .expert-notes h3 { color: var(--accent-neon); margin-top: 0; }
+        .expert-notes ul { padding-left: 20px; margin-bottom: 0; color: #ccc; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SkateMap - Painel de Prototipagem</h1>
+        <p class="subtitle">Selecione uma das 3 propostas concebidas pelo painel de especialistas abaixo:</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchProto(1)">1. Street Underground</button>
+        <button class="tab-btn" onclick="switchProto(2)">2. Foco Iniciante & Acessibilidade</button>
+        <button class="tab-btn" onclick="switchProto(3)">3. Utilitário Rápido (Minimalista)</button>
+    </div>
+
+    <!-- PROTÓTIPO 1 -->
+    <div id="proto-1" class="prototype-container active">
+        <div class="mockup-header">
+            <h2>🛹 Street Spotter</h2>
+            <span style="font-size: 0.8rem; background: #ff3366; color:#fff; padding: 2px 6px; border-radius: 4px;">Modo Rua</span>
+        </div>
+        <div class="mockup-map">
+            [Mapa Interativo - Picos de Rua]
+            <div class="pin" style="top: 40%; left: 30%;">🛹</div>
+            <div class="pin" style="top: 65%; left: 70%;">🔥</div>
+        </div>
+        <div class="mockup-content">
+            <div class="card-item">
+                <h4>Praça do Museu (Ledge & Banco)</h4>
+                <p>Piso: Liso | Iluminação: Boa | Status: Ativo</p>
+            </div>
+            <button class="btn-action">+ Adicionar Pico de Rua</button>
+        </div>
+    </div>
+
+    <!-- PROTÓTIPO 2 -->
+    <div id="proto-2" class="prototype-container">
+        <div class="mockup-header">
+            <h2>🛡️ Skate Escola & Pistas</h2>
+            <span style="font-size: 0.8rem; background: #00e5ff; color:#000; padding: 2px 6px; border-radius: 4px;">Iniciante</span>
+        </div>
+        <div class="mockup-map" style="background-color: #1a2634;">
+            [Mapa Interativo - Foco em Segurança]
+            <div class="pin" style="top: 50%; left: 50%;">⭐</div>
+        </div>
+        <div class="mockup-content">
+            <div class="card-item" style="border-left-color: #00e5ff;">
+                <h4>Mini-Rampa Parque Central</h4>
+                <p>Ideal para iniciantes. Piso perfeito. Sem tráfego de carros.</p>
+            </div>
+            <button class="btn-action" style="background: #00e5ff; color: #000;">Ver Rotas e Dicas para Iniciantes</button>
+        </div>
+    </div>
+
+    <!-- PROTÓTIPO 3 -->
+    <div id="proto-3" class="prototype-container">
+        <div class="mockup-header">
+            <h2>⚡ QuickSpot Web</h2>
+            <span style="font-size: 0.8rem; background: #ffcc00; color:#000; padding: 2px 6px; border-radius: 4px;">Ultra-Leve</span>
+        </div>
+        <div class="mockup-map" style="background-color: #262314;">
+            [Mapa Compacto - Economia de Dados]
+            <div class="pin" style="top: 30%; left: 60%;">📍</div>
+        </div>
+        <div class="mockup-content">
+            <div class="card-item" style="border-left-color: #ffcc00;">
+                <h4>Corrimão da Estação</h4>
+                <p>Atenção: Seguranças rondam às 16h.</p>
+            </div>
+            <button class="btn-action" style="background: #ffcc00; color: #000;">Check-in Rápido no Local</button>
+        </div>
+    </div>
+
+    <div class="expert-notes">
+        <h3 id="notes-title">Notas dos Especialistas (Protótipo 1)</h3>
+        <ul id="notes-content">
+            <li><strong>Design Visual (Cris):</strong> Estética sombria de skate shop (*Dark Mode* nativo com rosa neon *#ff3366*), gerando forte apelo cultural.</li>
+            <li><strong>UX Design (Alex):</strong> Foco total na ação rápida de reportar picos de rua em menos de 3 toques na tela do celular.</li>
+            <li><strong>Acessibilidade (Bea):</strong> Contraste verificado para uso sob luz solar intensa na rua e áreas de toque com mínimo de 48px.</li>
+        </ul>
+    </div>
+
+    <script>
+        const notesData = {
+            1: {
+                title: "Notas dos Especialistas (Protótipo 1 - Street Underground)",
+                items: `
+                    <li><strong>Design Visual (Cris):</strong> Estética urbana/underground com modo escuro nativo e rosa choque neon, conectando diretamente com a subcultura do skate de rua.</li>
+                    <li><strong>UX Design (Alex):</strong> Fluxo focado em check-ins rápidos e marcação de *spots* de rua informais.</li>
+                    <li><strong>Acessibilidade (Bea):</strong> Contraste elevado contra o fundo escuro para visualização rápida sob a luz do sol na rua.</li>
+                `
+            },
+            2: {
+                title: "Notas dos Especialistas (Protótipo 2 - Foco Iniciante & Acessibilidade)",
+                items: `
+                    <li><strong>Design Visual (Cris):</strong> Paleta acolhedora com azul ciano brilhante, transmitindo segurança e tranquilidade para novos praticantes.</li>
+                    <li><strong>UX Design (Alex):</strong> Destaque para picos seguros, sem carros e com níveis de dificuldade explícitos logo na primeira tela.</li>
+                    <li><strong>Acessibilidade (Bea):</strong> Conformidade estrita WCAG AAA para tamanhos de fonte grandes, botões expandidos e suporte a leitores de tela para iniciantes com deficiências.</li>
+                `
+            },
+            3: {
+                title: "Notas dos Especialistas (Protótipo 3 - Utilitário Rápido)",
+                items: `
+                    <li><strong>Design Visual (Cris):</strong> Estilo minimalista com amarelo utilitário de sinalização, otimizado para carregamento instantâneo.</li>
+                    <li><strong>UX Design (Alex):</strong> Interface enxuta projetada para skatistas na rua com bateria baixa ou conexão de dados limitada.</li>
+                    <li><strong>Acessibilidade (Bea):</strong> Redução de elementos visuais poluídos para evitar sobrecarga cognitiva em usuários neurodivergentes.</li>
+                `
+            }
+        };
+
+        function switchProto(id) {
+            document.querySelectorAll('.prototype-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`proto-${id}`).classList.add('active');
+            event.target.classList.add('active');
+
+            document.getElementById('notes-title').innerText = notesData[id].title;
+            document.getElementById('notes-content').innerHTML = notesData[id].items;
+        }
+    </script>
+
+</body>
+</html>
